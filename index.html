@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+		<title>Clock</title>
+		<style>
+			.center-div
+			{
+			position: absolute;
+			margin: auto;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 235px;
+			}
+			img{
+			z-index: 1;}
+			a.sizelink{
+			z-index: 99;
+			}
+			a:link.sizelink {
+			color: #000000;
+			}
+			a:visited.sizelink {
+			color: #000000;
+			}
+			a:hover.sizelink {
+			color: #ff0000;
+			}
+			a:active.sizelink {
+			color: #ff0000;
+			}
+		</style>
+		<script language="JavaScript" type="text/javascript">
+			var currentSize;
+			var currentHide;
+			var secondsVar ="";
+			var currentSecs = 0;
+			
+			var c1 = new Image();
+			c1.src = "include/1.gif";
+			var c2 = new Image();
+			c2.src = "include/2.gif";
+			var c3 = new Image();
+			c3.src = "include/3.gif";
+			var c4 = new Image();
+			c4.src = "include/4.gif";
+			var c5 = new Image();
+			c5.src = "include/5.gif";
+			var c6 = new Image();
+			c6.src = "include/6.gif";
+			var c7 = new Image();
+			c7.src = "include/7.gif";
+			var c8 = new Image();
+			c8.src = "include/8.gif";
+			var c9 = new Image();
+			c9.src = "include/9.gif";
+			var c0 = new Image();
+			c0.src = "include/0.gif";
+			var cb = new Image();
+			cb.src = "include/b.gif";
+			
+			function put(h, m, s) {
+			 if (!document.images) return;
+			 if (h <= 9) {
+			  document.images.a.src = c0.src;
+			  document.images.b.src = eval("c" + h + ".src");
+			 } else {
+			  document.images.a.src = eval("c" + Math.floor(h / 10) + ".src");
+			  document.images.b.src = eval("c" + (h % 10) + ".src");
+			 }
+			 if (m <= 9) {
+			  document.images.d.src = c0.src;
+			  document.images.e.src = eval("c" + m + ".src");
+			 } else {
+			  document.images.d.src = eval("c" + Math.floor(m / 10) + ".src");
+			  document.images.e.src = eval("c" + (m % 10) + ".src");
+			 }
+			 if (s <= 9) {
+			  document.g.src = c0.src;
+			  document.images.h.src = eval("c" + s + ".src");
+			 } else {
+			  document.images.g.src = eval("c" + Math.floor(s / 10) + ".src");
+			  document.images.h.src = eval("c" + (s % 10) + ".src");
+			 }
+			}
+			
+			function updateClock() {
+			 if (!document.images)
+			  return;
+			 var Digital = new Date();
+			 var hours = Digital.getHours();
+			 var minutes = Digital.getMinutes();
+			 var seconds = Digital.getSeconds();
+			
+			 put(hours, minutes, seconds);
+			}
+			function changeLink(){
+			if(!currentHide){window.history.replaceState('Object', '', '?size='+currentSize+secondsVar);}
+			}
+			function setSize(j) {
+				document.images.a.width=j*18;
+				document.images.b.width=j*18;
+				document.images.c.width=j*9;
+				document.images.d.width=j*18;
+				document.images.e.width=j*18;
+				document.images.f.width=j*currentSecs*9;
+				document.images.g.width=j*currentSecs*18;
+				document.images.h.width=j*currentSecs*18;
+				document.images.a.height=j*25;
+				document.images.b.height=j*25;
+				document.images.c.height=j*25;
+				document.images.d.height=j*25;
+				document.images.e.height=j*25;
+				document.images.f.height=j*25;
+				document.images.g.height=j*25;
+				document.images.h.height=j*25;
+				document.getElementById("center-div").style.height=j*25+10;
+				currentSize=+j;
+				changeLink();
+				
+				
+			
+			}
+			
+			
+			var intvClock;
+			var timeoutClock;
+			function startClock(f,a){
+			var date = new Date();
+			if(a=="z"){clearInterval(intvClock);clearTimeout(timeoutClock);}
+			if(f=="s"){
+			secondsVar='';
+			updateClock();
+			currentSecs=1;
+				setSize(currentSize);
+			timeoutClock = setTimeout(function() {
+			    intvClock = setInterval(updateClock, 1000);
+			    updateClock();
+			}, (1000 - date.getMilliseconds()));
+			changeLink()
+			}else if (f=="n"){
+			secondsVar='&nosec=1';
+			updateClock();
+			currentSecs=0;
+				setSize(currentSize);
+			timeoutClock = setTimeout(function() {
+			    intvClock = setInterval(updateClock, 60000);
+			    updateClock();
+			}, (60 - date.getSeconds()) * 1000);
+			changeLink()
+			
+			
+			}
+			
+			}
+			
+			
+			function gup( name )
+			{
+			  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+			  var regexS = "[\\?&]"+name+"=([^&#]*)";
+			  var regex = new RegExp( regexS );
+			  var results = regex.exec( window.location.href );
+			  if( results == null )
+			    return "";
+			  else
+			    return results[1];
+			}
+			function isNaturalNumber(n) {
+			    n = n.toString(); // force the value incase it is not
+			    var n1 = Math.abs(n),
+			        n2 = parseInt(n, 10);
+			    return !isNaN(n1) && n2 === n1 && n1.toString() === n;
+			}
+			function getSetSize() {
+				var hide = gup('hide');
+				if (hide !== ''){document.getElementById('sizer').innerHTML="";currentHide=true;}
+				var nosec = gup('nosec');
+				var size = gup('size');
+				
+				if (!isNaturalNumber(size) || size < 1){size=9;}
+				if (nosec !== ''){startClock('n','z');}else{startClock('s','z');}
+				setSize(size);
+				
+				
+			}
+			function buttonSizer(s){
+				if(s=="+"&& currentSize <= 29){setSize(currentSize+1);}
+				else if(s=="-" && currentSize >= 2){setSize(currentSize-1);}
+				else {return;}
+			}
+			
+		</script>
+	</head>
+	<body  onload="getSetSize();updateClock();" bgcolor="#000000" text="#666666" id="theBody">
+		<div id="sizer">
+			<a class="sizelink" onclick="buttonSizer('+');" href="javascript:undefined">increase size</a>&nbsp;
+			<a class="sizelink" onclick="buttonSizer('-');" href="javascript:undefined">decrease size</a>&nbsp;
+			<a class="sizelink" onclick="startClock('s');" href="javascript:undefined">show seconds</a>&nbsp;
+			<a class="sizelink" onclick="startClock('n');" href="javascript:undefined">hide seconds</a>
+		</div>
+		<div class="center-div" id="center-div">
+			<table border="0" align="center">
+				<tr>
+					<td align="center">
+						<img height="225" src="include/b.gif" width="162" name="a" id="a" alt="Hours" title="Hours">
+						<img height="225" src="include/b.gif" width="162" name="b" id="b" alt="Hours" title="Hours">
+						<img height="225" src="include/c.gif" width="81" name="c" id="c">
+						<img height="225" src="include/b.gif" width="162" name="d" id="d" alt="Minutes" title="Minutes">
+						<img height="225" src="include/b.gif" width="162" name="e" id="e" alt="Minutes" title="Minutes">
+						<img height="225" src="include/c.gif" width="81" name="f" id="f">
+						<img height="225" src="include/b.gif" width="162" name="g" id="g" alt="Seconds" title="Seconds">
+						<img height="225" src="include/b.gif" width="162" name="h" id="h" alt="Seconds" title="Seconds">
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</HTML>
